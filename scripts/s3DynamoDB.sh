@@ -5,8 +5,8 @@ aws s3 mb s3://myapp01-terraform-state-prod --region us-east-1
 
 # Enable versioning
 aws s3api put-bucket-versioning --bucket myapp01-terraform-state-dev --versioning-configuration Status=Enabled
-aws s3api put-bucket-versioning --bucket myapp-terraform-state-staging --versioning-configuration Status=Enabled
-aws s3api put-bucket-versioning --bucket myapp-terraform-state-prod --versioning-configuration Status=Enabled
+aws s3api put-bucket-versioning --bucket myapp01-terraform-state-staging --versioning-configuration Status=Enabled
+aws s3api put-bucket-versioning --bucket myapp01-terraform-state-prod --versioning-configuration Status=Enabled
 
 # Create DynamoDB tables
 aws dynamodb create-table \

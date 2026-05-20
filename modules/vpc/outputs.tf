@@ -48,10 +48,10 @@ output "nat_gateway_ids" {
   value       = aws_nat_gateway.main[*].id
 }
 
-# output "nat_public_ips" {
-#   description = "NAT Gateway public IPs"
-#   value       = aws_eip.nat[*].public_ip
-# }
+output "nat_public_ips" {
+  description = "NAT Gateway public IPs"
+  value       = aws_eip.nat[*].public_ip
+}
 
 output "internet_gateway_id" {
   description = "Internet Gateway ID"
