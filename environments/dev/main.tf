@@ -35,7 +35,7 @@ resource "random_string" "suffix" {
 
 # VPC Module
 module "vpc" {
-  source = "../../../modules/vpc"
+  source = "../../modules/vpc"
 
   # AWS Configuration
   aws_region = var.aws_region

@@ -32,7 +32,8 @@ resource "random_string" "suffix" {
 }
 
 module "vpc" {
-  source = "../../../modules/vpc"
+  #source = "../../VPC-Module/modules/networking"
+  source = "../../modules/vpc"
 
   aws_region = var.aws_region
   environment = var.environment

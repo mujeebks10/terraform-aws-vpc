@@ -82,7 +82,40 @@ resource "aws_security_group" "app" {
   })
 }
 
-# DB Tier Security Group
+# # DB Tier Security Group
+# resource "aws_security_group" "db" {
+#   name        = "${var.environment}-db-sg"
+#   description = "Security group for database tier"
+#   vpc_id      = aws_vpc.main.id
+
+#   ingress {
+#     description     = "Database port from app tier"
+#     from_port       = var.db_port
+#     to_port         = var.db_port
+#     protocol        = "tcp"
+#     security_groups = [aws_security_group.app.id]
+#   }
+
+#   ingress {
+#     description     = "Database replication port"
+#     from_port       = var.db_replication_port
+#     to_port         = var.db_replication_port
+#     protocol        = "tcp"
+#     security_groups = [aws_security_group.db.id]
+#   }
+
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+
+#   tags = merge(local.common_tags, {
+#     Name = "${var.environment}-db-sg"
+#   })
+# }
+
 resource "aws_security_group" "db" {
   name        = "${var.environment}-db-sg"
   description = "Security group for database tier"
@@ -94,14 +127,6 @@ resource "aws_security_group" "db" {
     to_port         = var.db_port
     protocol        = "tcp"
     security_groups = [aws_security_group.app.id]
-  }
-
-  ingress {
-    description     = "Database replication port"
-    from_port       = var.db_replication_port
-    to_port         = var.db_replication_port
-    protocol        = "tcp"
-    security_groups = [aws_security_group.db.id]
   }
 
   egress {
@@ -171,4 +196,15 @@ resource "aws_security_group_rule" "db_admin_from_bastion" {
   security_group_id        = aws_security_group.db.id
   source_security_group_id = aws_security_group.bastion[0].id
   description              = "DB admin from bastion"
+}
+
+
+resource "aws_security_group_rule" "db_replication" {
+  type                     = "ingress"
+  from_port                = var.db_replication_port
+  to_port                  = var.db_replication_port
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.db.id
+  source_security_group_id = aws_security_group.db.id
+  description              = "Database replication port"
 }
