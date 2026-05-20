@@ -47,4 +47,3 @@ jobs:
     - name: terraform apply Destroy
       working-directory: ./modules/networking
       run: terraform apply -auto-approve tfplan-destroy   
-

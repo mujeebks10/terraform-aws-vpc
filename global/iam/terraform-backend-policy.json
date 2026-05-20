@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::myapp-terraform-state-dev/*",
+        "arn:aws:s3:::myapp-terraform-state-staging/*",
+        "arn:aws:s3:::myapp-terraform-state-prod/*",
+        "arn:aws:s3:::myapp-terraform-state-dev",
+        "arn:aws:s3:::myapp-terraform-state-staging",
+        "arn:aws:s3:::myapp-terraform-state-prod"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:*:*:table/myapp-terraform-locks-dev",
+        "arn:aws:dynamodb:*:*:table/myapp-terraform-locks-staging",
+        "arn:aws:dynamodb:*:*:table/myapp-terraform-locks-prod"
+      ]
+    }
+  ]
+}
