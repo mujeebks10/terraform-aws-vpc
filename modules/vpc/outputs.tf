@@ -87,3 +87,23 @@ output "vpc_flow_log_group" {
   description = "CloudWatch log group for VPC Flow Logs"
   value       = var.enable_flow_logs ? aws_cloudwatch_log_group.vpc_flow_logs[0].name : null
 }
+
+#######################################
+# Security Group Outputs
+#######################################
+
+output "web_security_group_id" {
+  value = aws_security_group.web.id
+}
+
+output "app_security_group_id" {
+  value = aws_security_group.app.id
+}
+
+output "db_security_group_id" {
+  value = aws_security_group.db.id
+}
+
+output "bastion_security_group_id" {
+  value = var.enable_bastion ? aws_security_group.bastion[0].id : null
+}

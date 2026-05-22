@@ -99,3 +99,24 @@ output "availability_zones" {
   description = "Availability zones used"
   value       = var.availability_zones
 }
+
+
+#######################################
+# Security Group Outputs
+#######################################
+
+output "web_security_group_id" {
+  value = module.vpc.web_security_group_id
+}
+
+output "app_security_group_id" {
+  value = module.vpc.app_security_group_id
+}
+
+output "db_security_group_id" {
+  value = module.vpc.db_security_group_id
+}
+
+output "bastion_security_group_id" {
+  value = module.vpc.bastion_security_group_id
+}
