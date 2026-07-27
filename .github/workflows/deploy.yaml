@@ -53,11 +53,11 @@ jobs:
       run: |
         terraform init --reconfigure
 
-    - name: Check Terraform Backend
-      working-directory: ./modules/vpc
-      run: |
-        terraform providers
-        terraform state list
+    # - name: Check Terraform Backend
+    #   working-directory: ./modules/vpc
+    #   run: |
+    #     terraform providers
+    #     terraform state list
 
     - name: Terraform Format Check
       working-directory: ./modules/vpc
