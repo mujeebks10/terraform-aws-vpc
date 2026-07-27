@@ -1,11 +1,11 @@
 locals {
-  random_suffix = var.random_suffix != "" ? var.random_suffix : random_string.suffix.result
+  
   common_tags = {
     Environment  = var.environment
     Project      = var.project_name
     ManagedBy    = "Terraform"
     Region       = var.aws_region
-    RandomSuffix = random_string.suffix.result #var.random_suffix
+    RandomSuffix = var.random_suffix
   }
 
   # Determine NAT Gateway count based on environment

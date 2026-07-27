@@ -74,11 +74,11 @@ variable "project_name" {
 #   type        = string
 # }
 
-# variable "random_suffix" {
-#   description = "Random suffix for unique naming"
-#   type        = string
-#   default     = null
-# }
+variable "random_suffix" {
+  description = "Random suffix for unique naming"
+  type        = string
+  default     = null
+}
 
 variable "allowed_ssh_cidrs" {
   description = "CIDR blocks allowed for SSH access"
