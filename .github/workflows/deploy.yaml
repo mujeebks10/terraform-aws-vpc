@@ -68,7 +68,12 @@ jobs:
       working-directory: ./modules/vpc
       run: terraform validate -no-color
 
-
+    - name: Check Terraform Files
+      working-directory: ./modules/vpc
+      run: |
+        ls -la
+        cat terraform.tfvars
+        
     - name: Terraform Plan
       working-directory: ./modules/vpc
       run: terraform plan -no-color -out=tfplan
