@@ -12,8 +12,8 @@ crash.log
 crash.*.log
 
 # Exclude all .tfvars files
-*.tfvars
-*.tfvars.json
+# *.tfvars
+# *.tfvars.json
 
 # Override files
 override.tf
