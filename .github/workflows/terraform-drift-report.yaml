@@ -11,13 +11,10 @@ on:
   # Allow manual execution
   workflow_dispatch:
 
-
-
 permissions:
 
   id-token: write
   contents: read
-
 
 
 jobs:
