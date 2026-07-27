@@ -5,7 +5,7 @@ locals {
     Project      = var.project_name
     ManagedBy    = "Terraform"
     Region       = var.aws_region
-    RandomSuffix = var.random_suffix
+    RandomSuffix = random_string.suffix.result #var.random_suffix
   }
 
   # Determine NAT Gateway count based on environment
