@@ -1,0 +1,191 @@
+name: Terraform Drift Detection Report
+
+
+on:
+
+  # Run every day at 2 AM UTC
+  schedule:
+    - cron: "*/10 * * * *"
+
+
+  # Allow manual execution
+  workflow_dispatch:
+
+
+
+permissions:
+
+  id-token: write
+  contents: read
+
+
+
+jobs:
+
+  terraform-drift:
+
+
+    name: Terraform Drift Detection
+
+    runs-on: ubuntu-latest
+
+
+
+    env:
+
+      AWS_REGION: us-east-1
+      TF_VERSION: 1.13.3
+      TF_WORKING_DIR: ./environments/dev
+
+
+
+    steps:
+
+
+    ################################################
+    # Checkout
+    ################################################
+
+    - name: Checkout
+
+      uses: actions/checkout@v4
+
+
+
+    ################################################
+    # AWS OIDC Authentication
+    ################################################
+
+    - name: Configure AWS Credentials
+
+      uses: aws-actions/configure-aws-credentials@v5
+
+      with:
+
+        role-to-assume: arn:aws:iam::672004811216:role/github-actions-terraform-role
+
+        aws-region: ${{ env.AWS_REGION }}
+
+
+
+    - name: Verify AWS Identity
+
+      run: |
+
+        aws sts get-caller-identity
+
+
+
+    ################################################
+    # Terraform Setup
+    ################################################
+
+    - name: Setup Terraform
+
+      uses: hashicorp/setup-terraform@v3
+
+      with:
+
+        terraform_version: ${{ env.TF_VERSION }}
+
+
+
+    ################################################
+    # Terraform Init
+    ################################################
+
+    - name: Terraform Init
+
+      working-directory: ${{ env.TF_WORKING_DIR }}
+
+      run: |
+
+        terraform init \
+          -reconfigure \
+          -input=false
+
+
+
+    ################################################
+    # Terraform Drift Detection
+    ################################################
+
+    - name: Terraform Plan Drift Check
+
+      id: drift
+
+      continue-on-error: true
+
+
+      working-directory: ${{ env.TF_WORKING_DIR }}
+
+
+      run: |
+
+        terraform plan \
+          -detailed-exitcode \
+          -var-file="../../environments/dev/terraform.tfvars" \
+          -input=false \
+          -no-color \
+          -out=tfplan
+
+
+
+    ################################################
+    # Generate Drift Report
+    ################################################
+
+    - name: Generate Drift Report
+
+      if: steps.drift.outcome == 'failure'
+
+      working-directory: ${{ env.TF_WORKING_DIR }}
+
+      run: |
+
+
+        echo "Terraform Drift Report" > drift-report.txt
+
+        echo "======================" >> drift-report.txt
+
+        echo "" >> drift-report.txt
+
+
+        terraform show \
+        -no-color tfplan >> drift-report.txt
+
+
+
+    ################################################
+    # Upload Drift Report
+    ################################################
+
+    - name: Upload Drift Report
+
+      if: steps.drift.outcome == 'failure'
+
+      uses: actions/upload-artifact@v4
+
+      with:
+
+        name: terraform-drift-report
+
+        path: ./environments/dev/drift-report.txt
+
+
+
+    ################################################
+    # Fail Workflow If Drift Found
+    ################################################
+
+    - name: Drift Status
+
+      if: steps.drift.outcome == 'failure'
+
+      run: |
+
+        echo "===================================="
+        echo "🚨 TERRAFORM DRIFT DETECTED"
+        echo "===================================="
+
+        exit 1
