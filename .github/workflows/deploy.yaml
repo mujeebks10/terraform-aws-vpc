@@ -53,9 +53,9 @@ jobs:
       run: |
         terraform init \
           -reconfigure \
-          -backend-config=../../environments/dev/backend.tf
-   
-
+          -backend-config=../../environments/dev/backend.tf \
+          -input=false
+          
     - name: Terraform Format Check
       working-directory: ./modules/vpc
       run: terraform fmt -check -recursive
@@ -65,11 +65,12 @@ jobs:
       working-directory: ./modules/vpc
       run: terraform validate -no-color
 
+
     - name: Check Terraform Files
-      working-directory: ./modules/vpc
       run: |
-        ls -la
-        cat terraform.tfvars
+        ls -la ./modules/vpc
+        echo "------ Environment Variables ------"
+        cat ./environments/dev/terraform.tfvars    
 
     - name: Terraform Plan
       working-directory: ./modules/vpc
