@@ -53,7 +53,6 @@ jobs:
       run: |
         terraform init \
           -reconfigure \
-          -backend-config=../../environments/dev/backend.tf \
           -input=false
 
     - name: Terraform Format Check
@@ -68,7 +67,7 @@ jobs:
 
     - name: Check Terraform Files
       run: |
-        ls -la ./modules/vpc
+        ls -la ./environments/dev
         echo "------ Environment Variables ------"
         cat ./environments/dev/terraform.tfvars    
 
