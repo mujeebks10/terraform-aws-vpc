@@ -37,7 +37,7 @@ jobs:
     - name: Verify AWS Identity
       run: |
         aws sts get-caller-identity
-        
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
@@ -49,33 +49,40 @@ jobs:
 
 
     - name: Terraform Init
-      working-directory: ./modules/vpc
-      run: terraform init
-
-    - name: Check Terraform Backend
-      working-directory: ./modules/vpc
+      working-directory: ./environments/dev
       run: |
-        terraform providers
-        terraform state list
+        terraform init \
+          -reconfigure \
+          -input=false
 
     - name: Terraform Format Check
-      working-directory: ./modules/vpc
+      working-directory: ./environments/dev
       run: terraform fmt -check -recursive
 
 
     - name: Terraform Validate
-      working-directory: ./modules/vpc
+      working-directory: ./environments/dev
       run: terraform validate -no-color
 
 
+    - name: Check Terraform Files
+      run: |
+        ls -la ./environments/dev
+        echo "------ Environment Variables ------"
+        cat ./environments/dev/terraform.tfvars    
+
     - name: Terraform Plan
-      working-directory: ./modules/vpc
-      run: terraform plan -no-color -out=tfplan
-
-
+      working-directory: ./environments/dev
+      run: |
+        terraform plan \
+          -var-file="../../environments/dev/terraform.tfvars" \
+          -input=false \
+          -no-color \
+          -out=tfplan
+      
     - name: Terraform Apply
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      working-directory: ./modules/vpc
+      working-directory: ./environments/dev
       run: terraform apply -auto-approve tfplan
 
     

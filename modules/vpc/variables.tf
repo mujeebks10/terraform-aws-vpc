@@ -69,9 +69,15 @@ variable "project_name" {
   default     = "myapp"
 }
 
+# variable "random_suffix" {
+#   description = "Random suffix for unique naming"
+#   type        = string
+# }
+
 variable "random_suffix" {
   description = "Random suffix for unique naming"
   type        = string
+  default     = null
 }
 
 variable "allowed_ssh_cidrs" {
