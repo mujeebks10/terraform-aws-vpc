@@ -37,7 +37,7 @@ jobs:
     - name: Verify AWS Identity
       run: |
         aws sts get-caller-identity
-        
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
@@ -50,7 +50,8 @@ jobs:
 
     - name: Terraform Init
       working-directory: ./modules/vpc
-      run: terraform init
+      run: |
+        terraform init --reconfigure
 
     - name: Check Terraform Backend
       working-directory: ./modules/vpc
