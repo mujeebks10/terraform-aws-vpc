@@ -73,7 +73,7 @@ resource "aws_route_table_association" "private_db" {
 resource "aws_route" "vpc_peering" {
   count = var.enable_vpc_peering ? 1 : 0
 
-  route_table_id         = aws_route_table.public.id
-  destination_cidr_block = var.peered_vpc_cidr
+  route_table_id            = aws_route_table.public.id
+  destination_cidr_block    = var.peered_vpc_cidr
   vpc_peering_connection_id = var.vpc_peering_id
 }
