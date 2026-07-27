@@ -33,7 +33,11 @@ jobs:
         role-to-assume: arn:aws:iam::672004811216:role/github-actions-terraform-role
         aws-region: ${{ env.AWS_REGION }}
 
-
+     # ADD HERE
+    - name: Verify AWS Identity
+      run: |
+        aws sts get-caller-identity
+        
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
@@ -48,6 +52,11 @@ jobs:
       working-directory: ./modules/vpc
       run: terraform init
 
+    - name: Check Terraform Backend
+      working-directory: ./modules/vpc
+      run: |
+        terraform providers
+        terraform state list
 
     - name: Terraform Format Check
       working-directory: ./modules/vpc

@@ -15,4 +15,9 @@ enable_flow_logs         = true
 enable_s3_endpoint       = true
 enable_dynamodb_endpoint = true
 
+availability_zones = [
+  "us-east-1a",
+  "us-east-1b"
+]
+
 
