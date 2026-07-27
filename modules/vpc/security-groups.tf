@@ -63,11 +63,11 @@ resource "aws_security_group" "app" {
   }
 
   ingress {
-    description     = "App metrics port"
-    from_port       = var.metrics_port
-    to_port         = var.metrics_port
-    protocol        = "tcp"
-    cidr_blocks     = var.monitoring_cidrs
+    description = "App metrics port"
+    from_port   = var.metrics_port
+    to_port     = var.metrics_port
+    protocol    = "tcp"
+    cidr_blocks = var.monitoring_cidrs
   }
 
   egress {
