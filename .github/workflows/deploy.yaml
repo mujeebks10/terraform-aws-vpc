@@ -51,11 +51,6 @@ jobs:
     - name: Terraform Init
       working-directory: ./modules/vpc
       run: |
-        terraform init --reconfigure
-
-    - name: Terraform Init
-      working-directory: ./modules/vpc
-      run: |
         terraform init \
           -reconfigure \
           -backend-config=../../environments/dev/backend.tf
@@ -75,10 +70,6 @@ jobs:
       run: |
         ls -la
         cat terraform.tfvars
-
-    - name: Terraform Plan
-      working-directory: ./modules/vpc
-      run: terraform plan -no-color -out=tfplan
 
     - name: Terraform Plan
       working-directory: ./modules/vpc
