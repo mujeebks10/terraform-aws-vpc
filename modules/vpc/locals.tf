@@ -1,4 +1,5 @@
 locals {
+  random_suffix = var.random_suffix != "" ? var.random_suffix : random_string.suffix.result
   common_tags = {
     Environment  = var.environment
     Project      = var.project_name
