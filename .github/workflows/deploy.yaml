@@ -4,6 +4,7 @@ on:
   push:
     branches:
         - main
+        - dev
   pull_request:
     branches:
         - main
@@ -24,7 +25,7 @@ jobs:
     
     steps:
     - name: Checkout Github repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v5
@@ -33,24 +34,27 @@ jobs:
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: ${{ env.TF_VERSION }}
         
     - name: terraform init
       working-directory: ./modules/vpc
-      run: terraform init
+      run: terraform init -upgrade
 
     - name: terraform fmt
       working-directory: ./modules/vpc
-      run: terraform fmt
+      run: terraform fmt -check -recursive
       
     - name: terraform validate
       working-directory: ./modules/vpc
       run: terraform validate
+
     - name: terraform plan
+      id : plan
       working-directory: ./modules/vpc
-      run: terraform plan -out=tfplan
+      run: |
+        terraform plan -out=tfplan
 
     - name: terraform apply
       if: github.ref == 'refs/heads/main'
