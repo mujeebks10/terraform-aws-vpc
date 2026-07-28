@@ -4,8 +4,8 @@ name: Terraform Drift Detection Report
 on:
 
   # Run every day at 2 AM UTC
-  schedule:
-    - cron: "*/50 * * * *"
+  # schedule:
+  #   - cron: "*/50 * * * *"
 
   # Allow manual execution
   workflow_dispatch:
