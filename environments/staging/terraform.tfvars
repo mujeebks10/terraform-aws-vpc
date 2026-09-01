@@ -14,6 +14,6 @@ enable_flow_logs         = true
 enable_s3_endpoint       = true
 enable_dynamodb_endpoint = true
 
-## EC2 Instance Configurations
+# EC2 Instance Configurations
 instance_type         = "t3.micro"
 bastion_instance_type = "t2.micro"
